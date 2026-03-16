@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Angel's Cosmetics & Fashion</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+body{
+    margin:0;
+    font-family:'Poppins', sans-serif;
+    background:url("this.gif") no-repeat center center fixed;
+    background-size:cover;
+}
+.moving-products{
+    overflow:hidden;
+    background:rgba(255,255,255,0.6);
+    padding:15px 0;
+}
+
+.move-track{
+    display:flex;
+    width:calc(250px * 16);
+    animation:scroll 20s linear infinite;
+}
+.moving-products{
+    overflow:hidden;
+    background:rgba(255,255,255,0.6);
+    padding:15px 0;
+}
+
+.move-track{
+    display:flex;
+    width:calc(250px * 16);
+    animation:scroll 20s linear infinite;
+}
+
+.move-track img{
+    width:200px;
+    height:150px;
+    object-fit:cover;
+    margin:0 25px;
+    border-radius:15px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.3);
+}
+
+@keyframes scroll{
+    0%{ transform:translateX(0); }
+    100%{ transform:translateX(-50%); }
+}
+
+.move-track img{
+    width:200px;
+    height:150px;
+    object-fit:cover;
+    margin:0 25px;
+    border-radius:15px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.3);
+}
+
+@keyframes scroll{
+    0%{ transform:translateX(0); }
+    100%{ transform:translateX(-50%); }
+}
+/* COVER */
+.cover{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    background:rgba(0,0,0,0.6);
+    color:white;
+}
+
+.enter-btn{
+    padding:15px 25px;
+    background:#f5a2cb;
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-size:18px;
+    cursor:pointer;
+}
+
+/* HEADER */
+header{
+    background:#ff4da6;
+    color:white;
+    padding:20px;
+    text-align:center;
+    font-size:30px;
+}
+
+marquee{
+    background:#ff80bf;
+    padding:10px;
+    color:white;
+    font-weight:700;
+}
+
+/* NAV */
+nav{
+    background:#ff99cc;
+    padding:10px;
+    text-align:center;
+}
+
+nav a{
+    margin:0 15px;
+    color:white;
+    text-decoration:none;
+    font-weight:600;
+}
+
+/* SECTION */
+section{
+    padding:40px;
+    background:rgba(255,255,255,0.70);
+    margin:20px;
+    border-radius:15px;
+	backdrop-filter: blur(4px); 
+}
+
+.product-container{
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px;
+}
+
+.product{
+    width:200px;
+    padding:10px;
+    border-radius:15px;
+    box-shadow:0 2px 4px rgba(0,0,0,0.2);
+    transition:0.3s;
+}
+
+.product:hover{
+    transform:scale(1.05);
+}
+
+/* SKINCARE */
+#skincare .product{
+    background:#e6f7ff;
+}
+
+/* MAKEUP */
+#makeup .product{
+    background:#ffd6ec;
+}
+/* FEMALE */
+#female .product{
+    background:#f4b7f7;	
+}
+/* MALE */
+#male .product{
+    background:#2c2c2c;
+    color:white;
+
+}
+.product img{
+    width:100%;
+    height:250px;
+    object-fit:cover;
+    border-radius:10px;
+}
+
+button{
+    background:#f5a2cb;
+    color:white;
+    border:none;
+    padding:10px;
+    border-radius:12px;
+    cursor:pointer;
+    margin-top:6px;
+}
+
+/* BIG CART */
+.cart-box{
+    position:fixed;
+    right:0;
+    top:0;
+    width:400px;
+    height:90%;
+    background:white;
+    padding:20px;
+    box-shadow:-5px 0 15px rgba(0,0,0,0.4);
+    overflow-y:auto;
+    display:none;
+}	
+
+</style>
+
+<script>
+let cart=[];
+
+function enterShop(){
+    document.querySelector(".cover").style.display="none";
+    document.getElementById("main").style.display="block";
+}
+
+function addToCart(name,price){
+    cart.push({name,price});
+    alert("✅ " + name + " added to cart!");
+    displayCart();
+}
+
+function toggleCart(){
+    let box=document.getElementById("cartBox");
+    box.style.display = box.style.display=="block" ? "none":"block";
+}
+
+function displayCart(){
+    let items=document.getElementById("cartItems");
+    items.innerHTML="";
+    let total=0;
+
+    cart.forEach((item,index)=>{
+        total+=parseInt(item.price.replace("₱",""));
+        items.innerHTML+=`
+        <p>${item.name} - ${item.price}
+        <button onclick="removeItem(${index})">Remove</button></p>`;
+    });
+
+    document.getElementById("total").innerHTML="Total: ₱"+total;
+}
+
+function removeItem(index){
+    cart.splice(index,1);
+    displayCart();
+}
+
+function checkout(){
+    if(cart.length==0){
+        alert("Cart is empty!");
+        return;
+ }
+    document.getElementById("checkoutForm").style.display="block";
+}
+
+function placeOrder(){
+    let name=document.getElementById("fullname").value;
+    let phone=document.getElementById("phone").value;
+    let address=document.getElementById("address").value;
+    let payment=document.querySelector('input[name="payment"]:checked');
+
+    if(name=="" || phone=="" || address=="" || !payment){
+        alert("Please complete all details!");
+        return;
+    }
+
+    let orderNumber = Math.floor(Math.random()*100000);
+
+    alert("🎉 ORDER SUCCESSFULLY PLACED!\n\n"+
+          "Order No: "+orderNumber+
+          "\nName: "+name+
+          "\nPhone: "+phone+
+          "\nAddress: "+address+
+          "\nPayment: "+payment.value+
+          "\n\nThank you for shopping at Angel's Cosmetics 💗");
+
+    cart=[];
+    displayCart();
+
+    document.getElementById("checkoutForm").style.display="none";
+    document.getElementById("fullname").value="";
+    document.getElementById("phone").value="";
+    document.getElementById("address").value="";
+}
+</script>
+</head>
+
+<body>
+
+<div class="cover">
+<h1>Angel's Cosmetics & Fashion 💗</h1>
+<button class="enter-btn" onclick="enterShop()">Enter Shop</button>
+</div>
+
+<div id="main" style="display:none;">
+
+<header>
+Angel's Cosmetics & Fashion
+<button onclick="toggleCart()">🛒 View Cart</button>
+</header>
+
+<marquee><center>🔥 Big Sale! Free Shipping for orders above ₱199! Shop Now! 🔥</center></marquee>
+
+<div class="moving-products">
+    <div class="move-track">
+        <img src="makeup9.jpg">
+        <img src="skincare9.jpg">
+        <img src="femele1.jpg">
+        <img src="male2.jpg">
+        <img src="makeup2.jpg">
+        <img src="skincare3.jpg">
+        <img src="femele2.jpg">
+        <img src="male8.jpg">
+    </div>
+</div>
+
+<nav>
+<a href="#about">ABOUT</a>
+<a href="#skincare">SKINCARE</a>
+<a href="#makeup">MAKE-UP</a>
+<a href="#female">FEMALE</a>
+<a href="#male">MALE</a>
+</nav>
+
+<section id="about">
+<h1>About Our Product</h1>
+
+<p><b>Mission:</b> To provide affordable and high-quality beauty and fashion products that boost confidence.</p>
+
+<p><b>Vision:</b> To become a trusted and leading cosmetics and fashion brand worldwide.</p>
+
+<p>Facebook: 
+<a href="https://www.facebook.com/angelbernalyn.namocatcat.31" target="_blank">
+facebook.com/AngelsCosmeticsOfficial
+</a>
+</p>
+
+<p>Instagram: 
+<a href="https://www.instagram.com/Bernalyn.an" target="_blank">
+@AngelsFashionPH
+</a>
+</p>
+
+</section>
+
+<!-- SKINCARE -->
+<section id="skincare">
+<h1>Skincare</h1>
+<div class="product-container">
+<script>
+let skincare=["Cleanser","Toner","Vitamin C Serum","Niacinamide Serum","Moisturizer","Sunscreen","Night Cream","Eye Cream","Acne Gel","Face Mist"];
+for(let i=0;i<10;i++){
+document.write(`
+<div class="product">
+<img src="skincare${i+1}.jpg">
+<h3>${skincare[i]}</h3>
+<p>₱${99+i*20}</p>
+<button onclick="addToCart('${skincare[i]}','₱${99+i*10}')">Add to Cart</button>
+</div>
+`);
+}
+</script>
+</div>
+</section>
+
+<!-- MAKEUP -->
+<section id="makeup">
+<h1>Makeup</h1>
+<div class="product-container">
+<script>
+let makeup=["Lipstick","Foundation","Blush","Mascara","Eyeshadow","Highlighter","Lip Tint","Setting Spray","Contour Kit","Brow Pencil","BB Cream","Primer","Powder","Eyeliner","Makeup Brush Set"];
+for(let i=0;i<15;i++){
+document.write(`
+<div class="product">
+<img src="makeup${i+1}.jpg">
+<h3>${makeup[i]}</h3>
+<p>₱${109+i*8}</p>
+<button onclick="addToCart('${makeup[i]}','₱${109+i*8}')">Add to Cart</button>
+</div>
+`);
+}
+</script>
+</div>
+</section>
+
+<!-- FEMALE -->
+<section id="female">
+<h2>Female Fashion 👗</h2>
+<div class="product-container">
+<script>
+let female=["Floral Dress","Crop Top","High Waist Jeans","Hoodie","Skirt","Blazer","Jumpsuit","Cardigan","Terno Set","Summer Dress"];
+for(let i=0;i<10;i++){
+document.write(`
+<div class="product">
+<img src="femele${i+1}.jpg">
+<h3>${female[i]}</h3>
+<p>₱${199+i*20}</p>
+<button onclick="addToCart('${female[i]}','₱${199+i*10}')">Add to Cart</button>
+</div>
+`);
+}
+</script>
+</div>
+</section>
+
+<!-- MALE -->
+<section id="male">
+<h2>Male Fashion 👕</h2>
+<div class="product-container">
+<script>
+let male=["Oversized Shirt","Polo Shirt","Denim Jacket","Jogger Pants","Hoodie","Cargo Pants","Sweatshirt","Shorts","Formal Polo","Slim Jeans"];
+for(let i=0;i<10;i++){
+document.write(`
+<div class="product">
+<img src="male${i+1}.jpg">
+<h3>${male[i]}</h3>
+<p>₱${199+i*12}</p>
+<button onclick="addToCart('${male[i]}','₱${199+i*12}')">Add to Cart</button>
+</div>
+`);
+}
+</script>
+</div>
+</section>
+
+<!-- CART -->
+<div class="cart-box" id="cartBox">
+<h1>Your Shopping Cart 🛒</h1>
+<div id="cartItems"></div>
+<h3 id="total">Total: ₱0</h3>
+<button onclick="checkout()">Checkout</button>
+
+<div id="checkoutForm" style="display:none; margin-top:15px;">
+
+<h3>Customer Information</h3>
+
+<input type="text" id="fullname" placeholder="Full Name" style="width:100%; padding:8px; margin:5px 0;">
+
+<input type="text" id="phone" placeholder="Phone Number" style="width:100%; padding:8px; margin:5px 0;">
+
+<textarea id="address" placeholder="Complete Address / Location"
+style="width:100%; padding:8px; margin:5px 0;"></textarea>
+
+<h4>Payment Method</h4>
+
+<label><input type="radio" name="payment" value="Cash on Delivery"> Cash on Delivery (COD)</label><br>
+
+<label><input type="radio" name="payment" value="GCash"> GCash</label><br>
+
+<label><input type="radio" name="payment" value="Bank Transfer"> Bank Transfer</label><br><br>
+
+<button onclick="placeOrder()">Place Order</button>
+
+</div>
+
+</div>
+</body>
+</html>
